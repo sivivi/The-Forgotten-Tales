@@ -4,26 +4,24 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private CharacterController controller;
-    private Vector3 playerVelocity;
-    private Rigidbody rb;
-    private Collider groundCheck;
+    public CharacterController controller;
+    public Vector3 playerVelocity;
     public float playerSpeed = 2.0f;
     public float jumpHeight = 1.0f;
+    public bool isGrounded = true;
+    public double gravity = -9.81;
 
     // Start is called before the first frame update
     void Start()
     {
         controller = gameObject.AddComponent<CharacterController>();
-        rb = gameObject.AddComponent<Rigidbody>();
-        groundCheck = gameObject.AddComponent<Collider>();
     }
-
+ 
     // Update is called once per frame
     void Update()
     {
         // jump
-        if (groundCheck.isTrigger && Input.GetButtonDown("Jump")) {
+        if (isGrounded && Input.GetButtonDown("Jump")) {
             playerVelocity.y += jumpHeight;
         }
 
@@ -37,5 +35,15 @@ public class PlayerMovement : MonoBehaviour
         }
 
         controller.Move(playerVelocity);
+    }
+
+    void OnCollisionStay(Collision collisionInfo)
+    {
+        // Debug-draw all contact points and normals
+        foreach (ContactPoint contact in collisionInfo.contacts)
+        {
+            Debug.DrawRay(contact.point, contact.normal * 10, Color.blue);
+            Debug.Log($"a");
+        }
     }
 }
