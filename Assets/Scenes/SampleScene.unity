@@ -178,7 +178,7 @@ PrefabInstance:
     - target: {fileID: -7635826562936255635, guid: 4373431e467a17843a261e9e9711856e, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 2100000, guid: 304b69397d8a339439343c5c6d491de9, type: 2}
     - target: {fileID: 919132149155446097, guid: 4373431e467a17843a261e9e9711856e, type: 3}
       propertyPath: m_Name
       value: FreePlayerModel
@@ -574,6 +574,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 835454175}
+  - {fileID: 1704454172}
   m_Father: {fileID: 1082137979}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
