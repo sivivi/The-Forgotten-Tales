@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
     {
         // jump
         if (groundCheck.isTrigger && Input.GetButtonDown("Jump")) {
-            playerVelocity.y += jumpHeight
+            playerVelocity.y += jumpHeight;
         }
 
         // walk
@@ -36,6 +36,6 @@ public class PlayerMovement : MonoBehaviour
             gameObject.transform.forward = move;
         }
 
-        controller.Move(playerVelocity)
+        controller.Move(playerVelocity);
     }
 }
