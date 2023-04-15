@@ -8,10 +8,10 @@ public class PlayerMovement : MonoBehaviour
     public Transform cam;
     public float playerSpeed = 2.0f;
     public float jumpHeight = 1.0f;
-    public double gravity = -9.81;
-    public float yVelocity;
+    private double gravity = -9.81;
+    float yVelocity;
 
-    public float turnSmoothTime = 0.1f;
+    private float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
  
     // Update is called once per frame
@@ -30,7 +30,6 @@ public class PlayerMovement : MonoBehaviour
             controller.Move(moveDir.normalized * playerSpeed * Time.deltaTime);
         }
         
-
         // gravity
         yVelocity += (float) gravity * Time.deltaTime;
 
