@@ -4,42 +4,45 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private CharacterController controller;
-    public Vector3 playerVelocity;
+    public CharacterController controller;
+    public Transform cam;
     public float playerSpeed = 2.0f;
     public float jumpHeight = 1.0f;
     public double gravity = -9.81;
+    public float yVelocity;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        controller = gameObject.AddComponent<CharacterController>();
-        controller.skinWidth = 0.0001f;
-    }
+    public float turnSmoothTime = 0.1f;
+    float turnSmoothVelocity;
  
     // Update is called once per frame
     void Update()
     {
-        // gravity
-        playerVelocity.y += (float) gravity * Time.deltaTime;
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
+        Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
 
-        if (controller.isGrounded && playerVelocity.y < 0) {
-            playerVelocity.y = 0f;
+        if (direction.magnitude >= 0.1f) {
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            controller.Move(moveDir.normalized * playerSpeed * Time.deltaTime);
+        }
+        
+
+        // gravity
+        yVelocity += (float) gravity * Time.deltaTime;
+
+        if (controller.isGrounded && yVelocity < 0) {
+            yVelocity = 0f;
         }
 
         // jump
         if (controller.isGrounded && Input.GetButton("Jump")) {
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * (float)gravity);
+            yVelocity += Mathf.Sqrt(jumpHeight * -3.0f * (float)gravity);
         }
-
-        // walk
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
-        controller.Move(move.normalized * Time.deltaTime * playerSpeed);
         
-        if (move != Vector3.zero) {
-            gameObject.transform.forward = move;
-        }
-
-        controller.Move(playerVelocity * Time.deltaTime);
+        controller.Move(new Vector3(0, yVelocity, 0) * Time.deltaTime);
     }
 }
