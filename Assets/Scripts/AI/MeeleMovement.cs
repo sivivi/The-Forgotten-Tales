@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class MeeleMovement : MonoBehaviour
 {
@@ -10,21 +11,28 @@ public class MeeleMovement : MonoBehaviour
     private double gravity = -9.81;
     float yVelocity;
 
-    private float turnSmoothTime = 0.1f;
-    float turnSmoothVelocity;
-
-    public Transform target;
+    public float turnSmoothTime = 120f;
+    public GameObject target;
     public bool targetFriendlys;
     public float targetRange;
+    private UnityEngine.AI.NavMeshAgent agent;
+
+    private void Start()
+    {
+        agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        agent.speed = speed;
+        agent.angularSpeed = turnSmoothTime;
+    }
 
     // Update is called once per frame
     void Update()
     {
         // get new target
-        if (target == null || transform.position > targetRange){
-            target = GameObject.FindGameObjectWithTag("Player") + (targetFriendlys ? GameObject.FindGameObjectsWithTag("Enemy") : null);
+        if (target == null || Vector3.Distance(transform.position, target.transform.position) > targetRange){
+            GameObject[] targets = GameObject.FindGameObjectsWithTag("Player").Concat(targetFriendlys ? GameObject.FindGameObjectsWithTag("Enemy") : null).ToArray();
+            Debug.Log(targets);
 
-            closestTarget = null;
+            GameObject closestTarget = null;
             float closestDistance = targetRange;
             foreach (GameObject i in targets){
                 float distance = Vector3.Distance(transform.position, i.transform.position);
