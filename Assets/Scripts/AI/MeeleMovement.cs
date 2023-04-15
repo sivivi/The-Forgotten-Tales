@@ -5,16 +5,16 @@ using System.Linq;
 
 public class MeeleMovement : MonoBehaviour
 {
-    public CharacterController controller;
-    public float speed = 2.0f;
-    public float jumpHeight = 1.0f;
+    [SerializeField] private CharacterController controller;
+    [SerializeField] private float speed = 2.0f;
+    [SerializeField] private float jumpHeight = 1.0f;
     private double gravity = -9.81;
     float yVelocity;
 
-    public float turnSmoothTime = 120f;
-    public GameObject target;
-    public bool targetFriendlys;
-    public float targetRange;
+    [SerializeField] private float turnSmoothTime = 120f;
+    [SerializeField] private GameObject target;
+    [SerializeField] private bool targetFriendlys;
+    [SerializeField] private float targetRange;
     private UnityEngine.AI.NavMeshAgent agent;
 
     private void Start()
