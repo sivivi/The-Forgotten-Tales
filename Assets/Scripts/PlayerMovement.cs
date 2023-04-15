@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public CharacterController controller;
-    public Transform cam;
-    public float playerSpeed = 2.0f;
-    public float jumpHeight = 1.0f;
+    [SerializeField] private CharacterController controller;
+    [SerializeField] private Transform cam;
+    [SerializeField] private float playerSpeed = 2.0f;
+    [SerializeField] private float jumpHeight = 1.0f;
     private double gravity = -9.81;
     float yVelocity;
 
