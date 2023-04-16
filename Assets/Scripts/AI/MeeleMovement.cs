@@ -26,7 +26,7 @@ public class MeeleMovement : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {/*
         // get new target
         if (target == null || Vector3.Distance(transform.position, target.transform.position) > targetRange){
             GameObject[] targets = GameObject.FindGameObjectsWithTag("Player").Concat(targetFriendlys ? GameObject.FindGameObjectsWithTag("Enemy") : null).ToArray();
@@ -50,6 +50,6 @@ public class MeeleMovement : MonoBehaviour
 
         if (controller.isGrounded && yVelocity < 0) {
             yVelocity = 0f;
-        }
+        }*/
     }
 }

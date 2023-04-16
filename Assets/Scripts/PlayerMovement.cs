@@ -1,28 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private InputMaster controls;
     public CharacterController controller;
     public Transform cam;
-    public float playerSpeed = 2.0f;
-    public float jumpHeight = 1.0f;
+    [SerializeField] private float playerSpeed = 2.0f;
+    [SerializeField] private float jumpHeight = 1.0f;
     private double gravity = -9.81;
-    float yVelocity;
+    [SerializeField] private float yVelocity;
 
     private float turnSmoothTime = 0.1f;
-    float turnSmoothVelocity;
+    private float turnSmoothVelocity;
  
+    private void Awake()
+    {
+        controls = new InputMaster();
+        controls.Player.Jump.performed += ctx => Jump();
+    }
+
     // Update is called once per frame
     void Update()
     {
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
-        Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
+        Vector2 direction = controls.Player.Movement.ReadValue<Vector2>();
 
         if (direction.magnitude >= 0.1f) {
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+            float targetAngle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg + cam.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
@@ -37,11 +43,25 @@ public class PlayerMovement : MonoBehaviour
             yVelocity = 0f;
         }
 
-        // jump
-        if (controller.isGrounded && Input.GetButton("Jump")) {
+        controller.Move(new Vector3(0, yVelocity, 0) * Time.deltaTime);
+    }
+
+    void Jump() {
+        Debug.Log("jump");
+        if (controller.isGrounded) {
             yVelocity += Mathf.Sqrt(jumpHeight * -3.0f * (float)gravity);
         }
-        
-        controller.Move(new Vector3(0, yVelocity, 0) * Time.deltaTime);
+    }
+
+    void Move(Vector2 input) {
+        Debug.Log(input);
+    }
+
+    private void OnEnable() {
+        controls.Enable();
+    }
+
+    private void OnDisable() {
+        controls.Disable();
     }
 }
