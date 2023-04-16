@@ -39,12 +39,21 @@ public class PlayerMovement : MonoBehaviour
         }
         
         // gravity
-        yVelocity += (float) gravity * Time.deltaTime;
-
         if (controller.isGrounded && yVelocity < 0) {
             yVelocity = 0f;
         }
+    }
 
+    void FixedUpdate() {
+
+        // gravity
+        if (!controller.isGrounded) {
+            yVelocity += (float) gravity * Time.deltaTime;
+        } else
+        {
+            yVelocity = 0f;
+        }
+        
         controller.Move(new Vector3(0, yVelocity, 0) * Time.deltaTime);
     }
 
