@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     private InputMaster controls;
-    public CharacterController controller;
-    public Transform cam;
+    [SerializeField] private CharacterController controller;
+    [SerializeField] private Transform cam;
     [SerializeField] private float playerSpeed = 2.0f;
     [SerializeField] private float jumpHeight = 1.0f;
     private double gravity = -9.81;
@@ -18,6 +18,8 @@ public class PlayerMovement : MonoBehaviour
  
     private void Awake()
     {
+        controller = GetComponent<CharacterController>();
+        cam = GameObject.Find("Main Camera").transform;
         controls = new InputMaster();
         controls.Player.Jump.performed += ctx => Jump();
     }
