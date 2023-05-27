@@ -1,0 +1,2 @@
+Never commit directly into the main branch
+Commit to the Playground branch and make a pull request for it to be moved over to the main branch after staff supervision
